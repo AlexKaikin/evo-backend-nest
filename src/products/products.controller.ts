@@ -1,9 +1,10 @@
 import { Body, Controller, Param } from '@nestjs/common'
-import { Delete, Get, Post, Put, Query, Res } from '@nestjs/common/decorators'
+import { Delete, Get, Post, Patch, Query, Res } from '@nestjs/common/decorators'
 import { Response } from 'express'
-import { CreateProductDto, UpdateProductDto } from './products.dto'
 import { Product } from './products.schema'
 import { ProductsService } from './products.service'
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 
 @Controller('api/products')
 export class ProductsController {
@@ -27,13 +28,13 @@ export class ProductsController {
     return this.productsService.create(newProduct)
   }
 
-  @Put()
+  @Patch()
   update(@Body() updateProduct: UpdateProductDto): Promise<Product> {
     return this.productsService.update(updateProduct)
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string): Promise<Product> {
-    return this.productsService.delete(id)
+  remove(@Param('id') id: string): Promise<Product> {
+    return this.productsService.remove(id)
   }
 }

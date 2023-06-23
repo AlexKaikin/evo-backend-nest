@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { CreateProductDto, UpdateProductDto } from './products.dto'
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 import { Product, ProductDocument } from './products.schema'
 
 @Injectable()
@@ -36,7 +37,7 @@ export class ProductsService {
 
       return filter
     }
-    //      .populate('user')
+
     const totalCount: number = (await this.productModel.find(getFindParams()))
       .length
     const products = await this.productModel
@@ -44,6 +45,7 @@ export class ProductsService {
       .sort({ [_sort]: _order === 'desc' ? -1 : 1 })
       .limit(_limit)
       .skip(_limit * (_page - 1))
+      .populate('user')
       .exec()
 
     return { products, totalCount }
@@ -81,7 +83,7 @@ export class ProductsService {
     return updateProduct
   }
 
-  async delete(id: string) {
+  async remove(id: string) {
     return this.productModel.findOneAndDelete({ id })
   }
 }
