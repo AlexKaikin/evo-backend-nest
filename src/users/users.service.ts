@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { CreateUserDto } from './dto/create-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
 import { User, UserDocument } from './users.schema'
 
@@ -9,24 +8,15 @@ import { User, UserDocument } from './users.schema'
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  create(user: CreateUserDto) {
-    user.id = new Date().getTime()
-    user.created = new Date().getTime()
-    user.updated = new Date().getTime()
-    const newUser = new this.userModel(user)
-    newUser.save()
-    return newUser
-  }
-
   async findAll(query: any) {
-    //const user_id = req.userId
+    const user_id = query.currentUser._id
     const q = query.q ? query.q : null
     const _limit = query._limit ? parseInt(query._limit) : 0
     const _page = query._page ? parseInt(query._page) : 1
 
     function getFindParams() {
       const params: any = {}
-      //params._id = { $ne: mongoose.Types.ObjectId(user_id) }
+      params._id = { $ne: user_id }
       if (q) params.fullName = new RegExp(q, 'i')
 
       return params
@@ -40,6 +30,7 @@ export class UsersService {
       .limit(_limit)
       .skip(_limit * (_page - 1))
       .exec()
+
     return { users, totalCount }
   }
 

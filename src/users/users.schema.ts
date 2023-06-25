@@ -26,7 +26,7 @@ export class User {
   interests: string[]
 
   @Prop({ required: true, unique: true })
-  email: string[]
+  email: string
 
   @Prop({ required: true })
   passwordHash: string
