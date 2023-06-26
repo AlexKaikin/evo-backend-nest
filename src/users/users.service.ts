@@ -11,7 +11,7 @@ export class UsersService {
   async findAll(query: any) {
     const user_id = query.currentUser._id
     const q = query.q ? query.q : null
-    const _limit = query._limit ? parseInt(query._limit) : 0
+    const _limit = query._limit ? parseInt(query._limit) : 8
     const _page = query._page ? parseInt(query._page) : 1
 
     function getFindParams() {

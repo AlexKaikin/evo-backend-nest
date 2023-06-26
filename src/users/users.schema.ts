@@ -4,6 +4,9 @@ import mongoose, { Document } from 'mongoose'
 export type UserDocument = User & Document
 @Schema()
 export class User {
+  @Prop()
+  _id: string
+
   @Prop({ unique: true })
   id: number
 

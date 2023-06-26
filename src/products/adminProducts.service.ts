@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
+import { CreateProductDto } from './dto/create-product.dto'
+import { UpdateProductDto } from './dto/update-product.dto'
 import { Product, ProductDocument } from './products.schema'
+import { User } from 'src/users/users.schema'
 
 @Injectable()
-export class ProductsService {
+export class AdminProductsService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<ProductDocument>
   ) {}
@@ -16,7 +19,7 @@ export class ProductsService {
 
     const category = query.category ? query.category : null
 
-    const priceFrom = query.price_gte ? query.price_gte : 1
+    const priceFrom = query.price_gte ? query.price_gte : 0
     const priceTo = query.price_lte ? query.price_lte : 10000000
 
     const _sort = query._sort ? query._sort : null
@@ -26,8 +29,6 @@ export class ProductsService {
 
     function getFindParams() {
       const filter: any = {}
-      filter.published = true
-      filter.quantity = { $gte: 1 }
       filter.price = { $gte: priceFrom, $lte: priceTo }
 
       if (q) filter.title = new RegExp(q, 'i')
@@ -50,12 +51,37 @@ export class ProductsService {
   }
 
   async getById(id: string): Promise<Product> {
-    const product = await this.productModel.findOneAndUpdate(
-      { id: id },
-      { $inc: { viewsCount: 1 } },
-      { returnDocument: 'after' }
-    )
+    const product = await this.productModel.findOne({ id })
 
     return product
+  }
+
+  async create(product: CreateProductDto, user: User): Promise<Product> {
+    product.id = new Date().getTime()
+    product.created = new Date().getTime()
+    product.updated = new Date().getTime()
+    product.user = user._id
+
+    const newProduct = new this.productModel(product)
+    newProduct.save()
+
+    return newProduct
+  }
+
+  async update(product: UpdateProductDto, user: User): Promise<Product> {
+    product.updated = new Date().getTime()
+    product.user = user._id
+
+    const updateProduct = await this.productModel.findOneAndUpdate(
+      { id: product.id },
+      product,
+      { new: true }
+    )
+
+    return updateProduct
+  }
+
+  async remove(id: string) {
+    return this.productModel.findOneAndDelete({ id })
   }
 }
