@@ -15,6 +15,7 @@
 | class-transformer | for class-validator to work |
 | argon2 | user password encryption algorithm |
 | passport-jwt, passport | authentication middleware |
+| @nestjs/websockets, @nestjs/platform-socket.io | social network chats |
 | prettier | general code style settings for collaborative development |
 
 <h3>Frontend:</h3>

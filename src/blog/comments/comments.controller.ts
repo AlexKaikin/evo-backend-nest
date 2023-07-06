@@ -7,7 +7,7 @@ import { Comment } from './comments.schema'
 import { CommentsService } from './comments.service'
 import { CreateCommentDto } from './dto/create-comment.dto'
 
-@Controller('api/comments')
+@Controller('api/posts')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
@@ -30,17 +30,21 @@ export class CommentsController {
     const { comments, totalCount }: any =
       await this.commentsService.findAllForAccount(query, currentUser)
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(comments)
   }
 
-  @Get(':id')
+  @Get(':id/comments')
   async findAllForPost(
     @Param('id') id: string,
     @Query() query: any,
     @Res() res: Response
   ): Promise<Response> {
     const { comments, totalCount }: any =
-      await this.commentsService.findAllForPost(+id, query)
+      await this.commentsService.findAllForPost(id, query)
+
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
 
     return res.set({ 'X-Total-Count': totalCount }).json(comments)
   }

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { Product, ProductDocument } from '../products/products.schema'
 import { UpdateReviewDto } from './dto/update-review.dto'
-import { Review, ReviewDocument } from './review.schema'
+import { Review, ReviewDocument } from './reviews.schema'
 
 @Injectable()
 export class AdminReviewsService {

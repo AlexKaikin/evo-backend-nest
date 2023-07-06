@@ -11,7 +11,7 @@ export class Comment {
   body: string
 
   @Prop({ default: 'На модерации' })
-  published: boolean
+  published: string
 
   @Prop()
   created: number

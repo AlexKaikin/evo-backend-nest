@@ -8,9 +8,8 @@ import { JwtService } from '@nestjs/jwt'
 import { InjectModel } from '@nestjs/mongoose'
 import { hash, verify } from 'argon2'
 import { Model } from 'mongoose'
-import { CreateUserDto } from './dto/create-user.dto'
-import { RefreshTokenDto } from './dto/refresh-token.dto'
 import { User, UserDocument } from '../users/users.schema'
+import { RefreshTokenDto } from './dto/refresh-token.dto'
 
 @Injectable()
 export class AuthService {
@@ -19,14 +18,15 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async register(user: CreateUserDto) {
+  async register(user: any) {
     const checkUser = await this.userModel.findOne({ fullName: user.fullName })
 
     if (checkUser) throw new BadRequestException('User already exists')
+
     user.id = new Date().getTime()
     user.created = new Date().getTime()
     user.updated = new Date().getTime()
-    user.passwordHash = await hash(user.passwordHash)
+    user.passwordHash = await hash(user.password)
 
     const newUser = new this.userModel(user)
     const saveduser = await newUser.save()
@@ -43,15 +43,12 @@ export class AuthService {
     return { accessToken, refreshToken }
   }
 
-  async login(user: CreateUserDto) {
+  async login(user: any) {
     const existingUser = await this.userModel.findOne({ email: user.email })
 
     if (!existingUser) throw new NotFoundException('User not found')
 
-    const passwordMatch = await verify(
-      existingUser.passwordHash,
-      user.passwordHash
-    )
+    const passwordMatch = await verify(existingUser.passwordHash, user.password)
 
     if (!passwordMatch) throw new UnauthorizedException('Invalid password')
 
@@ -71,8 +68,16 @@ export class AuthService {
     return { user: user, ...tokens }
   }
 
-  async getMyProfile(userId: number) {
-    const user = await this.userModel.findOne({ id: userId })
+  async getMe(token: RefreshTokenDto) {
+    const result = await this.jwtService.verifyAsync(token.refreshToken)
+
+    if (!result) throw new UnauthorizedException('Invalid refresh token')
+
+    const user = await this.userModel
+      .findOne({ id: result.id })
+      .populate('subscribers', 'id fullName avatarUrl')
+      .populate('subscriptionsUser', 'id fullName avatarUrl')
+      .populate('subscriptionsGroup', 'id title avatarUrl')
     const tokens = await this.issueTokens(user.id)
 
     return { user: user, ...tokens }

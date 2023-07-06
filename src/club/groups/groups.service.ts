@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { User } from 'src/account/users/users.schema'
+import { User, UserDocument } from 'src/account/users/users.schema'
 import { CreateGroupDto } from './dto/create-group.dto'
 import { UpdateGroupDto } from './dto/update-group.dto'
 import { Group, GroupDocument } from './groups.schema'
@@ -9,7 +9,8 @@ import { Group, GroupDocument } from './groups.schema'
 @Injectable()
 export class GroupsService {
   constructor(
-    @InjectModel(Group.name) private groupModel: Model<GroupDocument>
+    @InjectModel(Group.name) private groupModel: Model<GroupDocument>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>
   ) {}
 
   async create(group: CreateGroupDto, user: User) {
@@ -40,9 +41,9 @@ export class GroupsService {
     return { groups, totalCount }
   }
 
-  async findOne(id: number): Promise<Group> {
+  async findOne(id: string): Promise<Group> {
     const group = await this.groupModel
-      .findOne({ id })
+      .findOne({ _id: id })
       .populate('subscribers', 'id fullName avatarUrl')
 
     if (!group) throw new NotFoundException('Group not found')
@@ -53,10 +54,7 @@ export class GroupsService {
   async update(id: number, group: UpdateGroupDto) {
     group.updated = new Date().getTime()
 
-    const updatedGroup = await this.groupModel.findOneAndUpdate(
-      { id },
-      { ...group }
-    )
+    const updatedGroup = await this.groupModel.findOneAndUpdate({ id }, group)
 
     return updatedGroup
   }
@@ -65,5 +63,45 @@ export class GroupsService {
     const group = await this.groupModel.findOneAndDelete({ id })
 
     return group
+  }
+
+  async followGroup(
+    id: string,
+    user: User
+  ): Promise<{ success: boolean; user_id: string }> {
+    const user_id = user._id
+    const followGroup_id = id
+
+    await this.userModel.updateOne(
+      { _id: user_id },
+      { $push: { subscriptionsGroup: followGroup_id } }
+    )
+
+    await this.groupModel.updateOne(
+      { _id: followGroup_id },
+      { $push: { subscribers: user_id } }
+    )
+
+    return { success: true, user_id: user_id }
+  }
+
+  async unFollowGroup(
+    id: string,
+    user: User
+  ): Promise<{ success: boolean; user_id: string }> {
+    const user_id = user._id
+    const unFollowGroup_id = id
+
+    await this.userModel.updateOne(
+      { _id: user_id },
+      { $pull: { subscriptionsGroup: unFollowGroup_id } }
+    )
+
+    await this.groupModel.updateOne(
+      { _id: unFollowGroup_id },
+      { $pull: { subscribers: user_id } }
+    )
+
+    return { success: true, user_id: user_id }
   }
 }

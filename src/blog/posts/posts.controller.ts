@@ -11,6 +11,8 @@ export class PostsController {
   async findAll(@Query() query: any, @Res() res: Response): Promise<Response> {
     const { posts, totalCount }: any = await this.postsService.findAll(query)
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(posts)
   }
 

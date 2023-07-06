@@ -4,7 +4,7 @@ import { Model } from 'mongoose'
 import { User } from 'src/account/users/users.schema'
 import { CreateReviewDto } from './dto/create-review.dto'
 import { UpdateReviewDto } from './dto/update-review.dto'
-import { Review, ReviewDocument } from './review.schema'
+import { Review, ReviewDocument } from './reviews.schema'
 
 @Injectable()
 export class ReviewsService {
@@ -47,19 +47,19 @@ export class ReviewsService {
   }
 
   async findAllForProduct(
-    id: number,
+    id: string,
     query: any
   ): Promise<{ reviews: Review[]; totalCount: number }> {
-    const productId = id
+    const product_id = id
     const _limit = query._limit ? parseInt(query._limit) : 8
     const _page = query._page ? parseInt(query._page) : 1
 
     const totalCount: number = (
-      await this.reviewModel.find({ product: productId, published: 'Одобрен' })
+      await this.reviewModel.find({ product: product_id, published: 'Одобрен' })
     ).length
 
     const reviews = await this.reviewModel
-      .find({ product: productId, published: 'Одобрен' })
+      .find({ product: product_id, published: 'Одобрен' })
       .limit(_limit)
       .skip(_limit * (_page - 1))
       .populate('user')

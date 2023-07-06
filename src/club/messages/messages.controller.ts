@@ -18,7 +18,7 @@ import { CreateMessageDto } from './dto/create-message.dto'
 import { Message } from './messages.schema'
 import { MessagesService } from './messages.service'
 
-@Controller('api/club/messages')
+@Controller('api/messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
@@ -41,6 +41,8 @@ export class MessagesController {
       query,
       currentUser
     )
+
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
 
     return res.set({ 'X-Total-Count': totalCount }).json(messages)
   }

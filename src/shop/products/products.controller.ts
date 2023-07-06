@@ -13,6 +13,7 @@ export class ProductsController {
     const { products, totalCount }: any = await this.productsService.findAll(
       query
     )
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
 
     return res.set({ 'X-Total-Count': totalCount }).json(products)
   }

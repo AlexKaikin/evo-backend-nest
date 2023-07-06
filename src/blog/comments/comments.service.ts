@@ -46,23 +46,22 @@ export class CommentsService {
   }
 
   async findAllForPost(
-    id: number,
+    id: string,
     query: any
   ): Promise<{ comments: Comment[]; totalCount: number }> {
-    const postId = id
+    const post_id = id
     const _limit = query._limit ? parseInt(query._limit) : 8
     const _page = query._page ? parseInt(query._page) : 1
 
     const totalCount: number = (
-      await this.commentModel.find({ post: postId, published: 'Одобрен' })
+      await this.commentModel.find({ post: post_id, published: 'Одобрен' })
     ).length
 
     const comments = await this.commentModel
-      .find({ post: postId, published: 'Одобрен' })
+      .find({ post: post_id, published: 'Одобрен' })
       .limit(_limit)
       .skip(_limit * (_page - 1))
-      .populate('user')
-      .populate('product', 'title id')
+      .populate('user', 'fullName avatarUrl')
       .exec()
 
     return { comments, totalCount }

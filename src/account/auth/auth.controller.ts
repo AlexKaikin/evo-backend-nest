@@ -1,15 +1,15 @@
 import {
   Body,
   Controller,
-  Get,
+  //Get,
   Post,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { Auth } from './decorators/auth.decorator'
-import { CurrentUser } from './decorators/user.decorator'
-import { CreateUserDto } from './dto/create-user.dto'
+// import { Auth } from './decorators/auth.decorator'
+// import { CurrentUser } from './decorators/user.decorator'
+// import { CreateUserDto } from './dto/create-user.dto'
 import { RefreshTokenDto } from './dto/refresh-token.dto'
 
 @Controller('api/auth')
@@ -18,7 +18,7 @@ export class AuthController {
 
   @UsePipes(new ValidationPipe())
   @Post('register')
-  register(@Body() user: CreateUserDto) {
+  register(@Body() user: any) {
     return this.authService.register(user)
   }
 
@@ -28,13 +28,12 @@ export class AuthController {
   }
 
   @Post('login')
-  login(@Body() user: CreateUserDto) {
+  login(@Body() user: any) {
     return this.authService.login(user)
   }
 
-  @Auth()
-  @Get('getMyProfile')
-  getMyProfile(@CurrentUser('id') userId: number) {
-    return this.authService.getMyProfile(userId)
+  @Post('me')
+  getMe(@Body() token: RefreshTokenDto) {
+    return this.authService.getMe(token)
   }
 }

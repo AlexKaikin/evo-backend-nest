@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { Exclude } from 'class-transformer'
 import mongoose, { Document } from 'mongoose'
+import { Group } from 'src/club/groups/groups.schema'
 
 export type UserDocument = User & Document
 @Schema()
@@ -38,14 +39,14 @@ export class User {
   @Prop({ default: 'user' })
   role: string
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  subscribers: string[]
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  subscribers: User[]
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  subscriptionsUser: string[]
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+  subscriptionsUser: User[]
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Group' })
-  subscriptionsGroup: string[]
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Group' }] })
+  subscriptionsGroup: Group[]
 
   @Prop()
   created: number

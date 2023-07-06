@@ -12,7 +12,7 @@ import { Response } from 'express'
 import { Auth } from 'src/account/auth/decorators/auth.decorator'
 import { UpdateReviewDto } from './dto/update-review.dto'
 import { AdminReviewsService } from './reviews.admin.service'
-import { Review } from './review.schema'
+import { Review } from './reviews.schema'
 
 @Controller('api/admin/reviews')
 export class AdminReviewsController {

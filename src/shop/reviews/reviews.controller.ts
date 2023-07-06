@@ -15,10 +15,10 @@ import { CurrentUser } from 'src/account/auth/decorators/user.decorator'
 import { User } from 'src/account/users/users.schema'
 import { CreateReviewDto } from './dto/create-review.dto'
 import { UpdateReviewDto } from './dto/update-review.dto'
+import { Review } from './reviews.schema'
 import { ReviewsService } from './reviews.service'
-import { Review } from './review.schema'
 
-@Controller('api/reviews')
+@Controller('api/products')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
@@ -41,17 +41,21 @@ export class ReviewsController {
     const { reviews, totalCount }: any =
       await this.reviewsService.findAllForAccount(query, currentUser)
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(reviews)
   }
 
-  @Get(':id')
+  @Get(':id/reviews')
   async findAllForProduct(
     @Param('id') id: string,
     @Query() query: any,
     @Res() res: Response
   ): Promise<Response> {
     const { reviews, totalCount }: any =
-      await this.reviewsService.findAllForProduct(+id, query)
+      await this.reviewsService.findAllForProduct(id, query)
+
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
 
     return res.set({ 'X-Total-Count': totalCount }).json(reviews)
   }

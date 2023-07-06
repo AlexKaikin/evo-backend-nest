@@ -7,7 +7,7 @@ export class NavigationController {
   constructor(private readonly navigationService: NavigationService) {}
 
   @Get()
-  find(): Promise<Navigation> {
+  find(): Promise<Navigation[]> {
     return this.navigationService.find()
   }
 }

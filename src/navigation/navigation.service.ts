@@ -11,7 +11,7 @@ export class NavigationService {
   ) {}
 
   async find() {
-    const navigation = await this.navigationModel.findOne()
+    const navigation = await this.navigationModel.find()
 
     if (!navigation) throw new NotFoundException('Navigation not found')
 

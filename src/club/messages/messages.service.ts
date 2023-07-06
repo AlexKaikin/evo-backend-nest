@@ -33,21 +33,18 @@ export class MessagesService {
     user: User
   ): Promise<{ messages: Message[]; totalCount: number }> {
     const user_id = id
-    const my_id = user._id
+    const my_id = user._id.toString()
+
     const _limit = query._limit ? parseInt(query._limit) : 20
     const _page = query._page ? parseInt(query._page) : 1
 
     const totalCount: number = (
-      await this.messageModel.find({
-        room: { $all: [my_id, user_id] },
-      })
+      await this.messageModel.find({ room: { $all: [my_id, user_id] } })
     ).length
 
     const messages = await this.messageModel
-      .find({
-        room: { $all: [my_id, user_id] },
-      })
-      .sort({ id: -1 })
+      .find({ room: { $all: [my_id, user_id] } })
+      .sort({ id: 1 })
       .limit(_limit)
       .skip(_limit * (_page - 1))
       .exec()

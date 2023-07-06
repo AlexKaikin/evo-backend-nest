@@ -18,7 +18,7 @@ import { UpdateGroupDto } from './dto/update-group.dto'
 import { Group } from './groups.schema'
 import { GroupsService } from './groups.service'
 
-@Controller('api/club/groups')
+@Controller('api/groups')
 export class GroupsController {
   constructor(private readonly groupsService: GroupsService) {}
 
@@ -42,7 +42,7 @@ export class GroupsController {
   @Get(':id')
   @Auth()
   findOne(@Param('id') id: string) {
-    return this.groupsService.findOne(+id)
+    return this.groupsService.findOne(id)
   }
 
   @Patch(':id')
@@ -58,5 +58,17 @@ export class GroupsController {
   @Auth()
   remove(@Param('id') id: string) {
     return this.groupsService.remove(+id)
+  }
+
+  @Patch('follow/:id')
+  @Auth()
+  followGroup(@Param('id') id: string, @CurrentUser() currentUser: User) {
+    return this.groupsService.followGroup(id, currentUser)
+  }
+
+  @Patch('unfollow/:id')
+  @Auth()
+  unFollowGroup(@Param('id') id: string, @CurrentUser() currentUser: User) {
+    return this.groupsService.unFollowGroup(id, currentUser)
   }
 }

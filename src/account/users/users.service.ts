@@ -35,19 +35,71 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<User> {
-    const user = await this.userModel.findOne({ id: id })
+    const user = await this.userModel
+      .findOne({ _id: id })
+      .populate('subscribers', 'id fullName avatarUrl')
+      .populate('subscriptionsUser', 'id fullName avatarUrl')
+      .populate('subscriptionsGroup', 'id title avatarUrl')
 
     if (!user) throw new NotFoundException('User not found')
 
     return user
   }
 
-  async update(id: string, user: UpdateUserDto): Promise<User> {
+  async update(currentUser: User, user: UpdateUserDto): Promise<User> {
+    if (currentUser.id !== user.id) throw new NotFoundException('Forbidden')
+
     user.updated = new Date().getTime()
-    const updateUser = await this.userModel.findOneAndUpdate({ id }, user, {
-      new: true,
-    })
+    if (user.interests.length === 1 && user.interests[0] === '')
+      user.interests = []
+
+    const updateUser = await this.userModel.findOneAndUpdate(
+      { id: currentUser.id },
+      user,
+      { new: true }
+    )
+
     return updateUser
+  }
+
+  async followUser(
+    id: string,
+    user: User
+  ): Promise<{ success: boolean; user_id: string }> {
+    const user_id = user._id
+    const followUser_id = id
+
+    await this.userModel.updateOne(
+      { _id: user_id },
+      { $push: { subscriptionsUser: followUser_id } }
+    )
+
+    await this.userModel.updateOne(
+      { _id: followUser_id },
+      { $push: { subscribers: user_id } }
+    )
+
+    return { success: true, user_id: user_id }
+  }
+
+  async unFollowUser(
+    id: string,
+    user: User
+  ): Promise<{ success: boolean; user_id: string }> {
+    const user_id = user._id
+    const followUser_id = id
+
+    await this.userModel.updateOne(
+      { _id: user_id },
+      { $pull: { subscriptionsUser: followUser_id } }
+    )
+
+    await this.userModel.updateOne(
+      { _id: followUser_id },
+      { $pull: { subscribers: user_id } }
+    )
+
+    return { success: true, user_id: user_id }
   }
 
   remove(id: string) {

@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Patch,
+  //Post,
   Query,
   Res,
 } from '@nestjs/common'
@@ -19,8 +20,8 @@ import { UsersService } from './users.service'
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Auth()
   @Get()
+  @Auth()
   async findAll(
     @CurrentUser() currentUser: User,
     @Query() query: any,
@@ -34,21 +35,36 @@ export class UsersController {
     return res.set({ 'X-Total-Count': totalCount }).json(users)
   }
 
-  @Auth()
   @Get(':id')
+  @Auth()
   findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(id)
   }
 
+  @Patch()
   @Auth()
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto)
+  update(
+    @CurrentUser() currentUser: User,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
+    return this.usersService.update(currentUser, updateUserDto)
   }
 
-  @Auth()
   @Delete(':id')
+  @Auth()
   remove(@Param('id') id: string) {
     return this.usersService.remove(id)
+  }
+
+  @Patch('follow/:id')
+  @Auth()
+  followUser(@Param('id') id: string, @CurrentUser() currentUser: User) {
+    return this.usersService.followUser(id, currentUser)
+  }
+
+  @Patch('unfollow/:id')
+  @Auth()
+  unFollowUser(@Param('id') id: string, @CurrentUser() currentUser: User) {
+    return this.usersService.unFollowUser(id, currentUser)
   }
 }
