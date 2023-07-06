@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common'
 import { Server } from 'http'
-import { CreateEventDto } from './dto/create-event.dto'
+import { CreateSocketDto } from './dto/create-socket.dto'
 
 @Injectable()
-export class EventsService {
-  create(message: CreateEventDto, server: Server) {
+export class SocketsService {
+  create(message: CreateSocketDto, server: Server) {
     return server.emit(message.roomID, message)
   }
 }

@@ -11,7 +11,7 @@ import { BlogModule } from './blog/blog.module'
 import { ClubModule } from './club/club.module'
 import { NavigationModule } from './navigation/navigation.module'
 import { ShopModule } from './shop/shop.module'
-import { EventsModule } from './events/events.module'
+import { SocketsModule } from './sockets/sockets.module'
 dotenv.config()
 
 @Module({
@@ -27,7 +27,7 @@ dotenv.config()
     BlogModule,
     ClubModule,
     NavigationModule,
-    EventsModule,
+    SocketsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { EventsModule } from './events/events.module'
 import { GroupsModule } from './groups/groups.module'
 import { MessagesModule } from './messages/messages.module'
 import { NotesModule } from './notes/notes.module'
@@ -12,6 +13,7 @@ import { RoomsModule } from './rooms/rooms.module'
     RoomsModule,
     GroupsModule,
     RecommendationsModule,
+    EventsModule,
   ],
 })
 export class ClubModule {}

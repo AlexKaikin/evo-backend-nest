@@ -1,4 +1,4 @@
-export class CreateEventDto {
+export class CreateSocketDto {
   id: number
   room: string[]
   roomID: string
