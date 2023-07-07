@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { MongooseModule } from '@nestjs/mongoose'
+import { MulterModule } from '@nestjs/platform-express'
 import { ServeStaticModule } from '@nestjs/serve-static'
 import { path } from 'app-root-path'
 import * as dotenv from 'dotenv'
@@ -28,6 +29,7 @@ dotenv.config()
     ClubModule,
     NavigationModule,
     SocketsModule,
+    MulterModule.register({ dest: '/uploads' }),
   ],
   controllers: [AppController],
   providers: [AppService],

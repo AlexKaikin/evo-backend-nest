@@ -24,23 +24,22 @@ export class OrdersService {
 
   async findAllForAccount(
     query: any,
-    currentUser: User
-  ): Promise<{ reviews: Order[]; totalCount: number }> {
+    user: User
+  ): Promise<{ orders: Order[]; totalCount: number }> {
     const _limit = query._limit ? parseInt(query._limit) : 8
     const _page = query._page ? parseInt(query._page) : 1
 
-    const totalCount: number = (
-      await this.orderModel.find({ user: currentUser })
-    ).length
+    const totalCount: number = (await this.orderModel.find({ user: user._id }))
+      .length
 
-    const reviews = await this.orderModel
-      .find({ user: currentUser })
+    const orders = await this.orderModel
+      .find({ user: user._id })
       .limit(_limit)
       .skip(_limit * (_page - 1))
       .populate('user')
       .exec()
 
-    return { reviews, totalCount }
+    return { orders, totalCount }
   }
 
   async findOne(id: number) {

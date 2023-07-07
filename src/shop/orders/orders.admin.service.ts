@@ -12,20 +12,20 @@ export class AdminOrdersService {
 
   async findAllForAdmin(
     query: any
-  ): Promise<{ reviews: Order[]; totalCount: number }> {
+  ): Promise<{ orders: Order[]; totalCount: number }> {
     const _limit = query._limit ? parseInt(query._limit) : 8
     const _page = query._page ? parseInt(query._page) : 1
 
     const totalCount: number = (await this.orderModel.find()).length
 
-    const reviews = await this.orderModel
+    const orders = await this.orderModel
       .find()
       .limit(_limit)
       .skip(_limit * (_page - 1))
       .populate('user')
       .exec()
 
-    return { reviews, totalCount }
+    return { orders, totalCount }
   }
 
   async findOne(id: number) {

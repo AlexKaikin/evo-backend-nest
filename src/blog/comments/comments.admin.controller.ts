@@ -20,10 +20,12 @@ export class AdminCommentsController {
   @Get()
   @Auth('admin')
   async findAll(@Query() query: any, @Res() res: Response): Promise<Response> {
-    const { reviews, totalCount }: any =
+    const { comments, totalCount }: any =
       await this.adminCommentsService.findAll(query)
 
-    return res.set({ 'X-Total-Count': totalCount }).json(reviews)
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
+    return res.set({ 'X-Total-Count': totalCount }).json(comments)
   }
 
   @Get(':id')

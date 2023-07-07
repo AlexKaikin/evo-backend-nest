@@ -70,12 +70,16 @@ export class AdminProductsService {
     return newProduct
   }
 
-  async update(product: UpdateProductDto, user: User): Promise<Product> {
+  async update(
+    id: number,
+    product: UpdateProductDto,
+    user: User
+  ): Promise<Product> {
     product.updated = new Date().getTime()
     product.user = user._id
 
     const updateProduct = await this.productModel.findOneAndUpdate(
-      { id: product.id },
+      { id },
       product,
       { new: true }
     )

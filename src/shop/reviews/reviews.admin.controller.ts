@@ -25,6 +25,8 @@ export class AdminReviewsController {
       query
     )
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(reviews)
   }
 

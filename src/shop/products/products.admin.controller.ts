@@ -19,6 +19,8 @@ export class AdminProductsController {
     const { products, totalCount }: any =
       await this.adminProductsService.getAll(query)
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(products)
   }
 
@@ -37,13 +39,14 @@ export class AdminProductsController {
     return this.adminProductsService.create(newProduct, user)
   }
 
-  @Patch()
+  @Patch(':id')
   @Auth('admin')
   update(
+    @Param('id') id: string,
     @Body() updateProduct: UpdateProductDto,
     @CurrentUser() user: User
   ): Promise<Product> {
-    return this.adminProductsService.update(updateProduct, user)
+    return this.adminProductsService.update(+id, updateProduct, user)
   }
 
   @Delete(':id')

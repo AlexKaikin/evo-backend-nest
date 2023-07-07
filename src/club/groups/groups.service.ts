@@ -25,13 +25,22 @@ export class GroupsService {
   }
 
   async findAll(query: any): Promise<{ groups: Group[]; totalCount: number }> {
+    const q = query.q ? query.q : null
     const _limit = query._limit ? parseInt(query._limit) : 8
     const _page = query._page ? parseInt(query._page) : 1
 
-    const totalCount: number = (await this.groupModel.find()).length
+    function getFindParams() {
+      const filter: { title?: RegExp } = {}
+      if (q) filter.title = new RegExp(q, 'i')
+
+      return filter
+    }
+
+    const totalCount: number = (await this.groupModel.find(getFindParams()))
+      .length
 
     const groups = await this.groupModel
-      .find()
+      .find(getFindParams())
       .sort({ id: -1 })
       .limit(_limit)
       .skip(_limit * (_page - 1))

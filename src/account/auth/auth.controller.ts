@@ -22,10 +22,10 @@ export class AuthController {
     return this.authService.register(user)
   }
 
-  @Post('access-token')
-  getNewToken(@Body() token: RefreshTokenDto) {
-    return this.authService.getNewToken(token)
-  }
+  // @Post('access-token')
+  // getNewToken(@Body() token: RefreshTokenDto) {
+  //   return this.authService.getNewToken(token)
+  // }
 
   @Post('login')
   login(@Body() user: any) {

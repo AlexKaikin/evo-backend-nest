@@ -23,7 +23,7 @@ export class AdminCommentsService {
       .limit(_limit)
       .skip(_limit * (_page - 1))
       .populate('user')
-      .populate('product', 'title id')
+      .populate('post', 'title id')
       .exec()
 
     return { comments, totalCount }

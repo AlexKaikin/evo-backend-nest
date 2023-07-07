@@ -36,6 +36,8 @@ export class GroupsController {
   async findAll(@Query() query: any, @Res() res: Response): Promise<Response> {
     const { groups, totalCount }: any = await this.groupsService.findAll(query)
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(groups)
   }
 

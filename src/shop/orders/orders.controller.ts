@@ -27,6 +27,8 @@ export class OrdersController {
     const { orders, totalCount }: any =
       await this.ordersService.findAllForAccount(query, currentUser)
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(orders)
   }
 

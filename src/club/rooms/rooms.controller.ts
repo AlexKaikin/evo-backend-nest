@@ -28,6 +28,8 @@ export class RoomsController {
       currentUser
     )
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(rooms)
   }
 

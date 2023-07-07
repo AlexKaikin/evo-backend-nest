@@ -35,7 +35,7 @@ export class MessagesService {
     const user_id = id
     const my_id = user._id.toString()
 
-    const _limit = query._limit ? parseInt(query._limit) : 20
+    const _limit = query._limit ? parseInt(query._limit) : 0
     const _page = query._page ? parseInt(query._page) : 1
 
     const totalCount: number = (
@@ -44,7 +44,7 @@ export class MessagesService {
 
     const messages = await this.messageModel
       .find({ room: { $all: [my_id, user_id] } })
-      .sort({ id: 1 })
+      .sort({ id: -1 })
       .limit(_limit)
       .skip(_limit * (_page - 1))
       .exec()

@@ -18,7 +18,7 @@ import { UpdateReviewDto } from './dto/update-review.dto'
 import { Review } from './reviews.schema'
 import { ReviewsService } from './reviews.service'
 
-@Controller('api/products')
+@Controller('api/reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService: ReviewsService) {}
 
@@ -31,7 +31,7 @@ export class ReviewsController {
     return this.reviewsService.create(review, currentUser)
   }
 
-  @Get()
+  @Get('profile')
   @Auth()
   async findAllForAccount(
     @CurrentUser() currentUser: User,
@@ -46,7 +46,7 @@ export class ReviewsController {
     return res.set({ 'X-Total-Count': totalCount }).json(reviews)
   }
 
-  @Get(':id/reviews')
+  @Get('products/:id')
   async findAllForProduct(
     @Param('id') id: string,
     @Query() query: any,
