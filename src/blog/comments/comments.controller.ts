@@ -7,11 +7,11 @@ import { Comment } from './comments.schema'
 import { CommentsService } from './comments.service'
 import { CreateCommentDto } from './dto/create-comment.dto'
 
-@Controller('api/posts')
+@Controller('api')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Post()
+  @Post('comments')
   @Auth()
   create(
     @Body() createComment: CreateCommentDto,
@@ -20,7 +20,7 @@ export class CommentsController {
     return this.commentsService.create(createComment, currentUser)
   }
 
-  @Get()
+  @Get('profile/:id/comments')
   @Auth()
   async findAllForAccount(
     @CurrentUser() currentUser: User,
@@ -35,7 +35,7 @@ export class CommentsController {
     return res.set({ 'X-Total-Count': totalCount }).json(comments)
   }
 
-  @Get(':id/comments')
+  @Get('posts/:id/comments')
   async findAllForPost(
     @Param('id') id: string,
     @Query() query: any,
@@ -49,7 +49,7 @@ export class CommentsController {
     return res.set({ 'X-Total-Count': totalCount }).json(comments)
   }
 
-  @Get(':id')
+  @Get('comments/:id')
   findOne(@Param('id') id: string) {
     return this.commentsService.findOne(+id)
   }

@@ -1,4 +1,4 @@
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose'
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import mongoose, { Document } from 'mongoose'
 
 export type OrderDocument = Order & Document
@@ -34,17 +34,15 @@ export class Order {
   @Prop({ default: 'Ожидает оплаты' })
   status: string
 
-  @Prop(
-    raw({
-      cost: { type: Number },
-      id: { type: Number },
-      imgUrl: { type: String },
-      price: { type: Number },
-      quantity: { type: Number },
-      title: { type: String },
-    })
-  )
-  cartItems: Record<string, any>
+  @Prop()
+  cartItems: {
+    cost: { type: number }
+    id: { type: number }
+    imgUrl: { type: string }
+    price: { type: number }
+    quantity: { type: number }
+    title: { type: string }
+  }[]
 
   @Prop()
   totalCost: number
