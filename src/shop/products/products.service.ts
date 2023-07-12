@@ -19,6 +19,10 @@ export class ProductsService {
     const priceFrom = query.price_gte ? query.price_gte : null
     const priceTo = query.price_lte ? query.price_lte : null
 
+    const ratings = query.ratings ? query.ratings.split(',') : null
+
+    const manufacturer = query.manufacturer ? query.manufacturer : null
+
     const _sort = query._sort ? query._sort : null
     const _order = query._order ? query._order : null
     const _limit = query._limit ? parseInt(query._limit) : 8
@@ -31,6 +35,8 @@ export class ProductsService {
 
       if (q) filter.title = new RegExp(q, 'i')
       if (category) filter.category = category
+      if (ratings) filter.rating = { $in: ratings }
+      if (manufacturer) filter.manufacturer = new RegExp(manufacturer, 'i')
       if (priceFrom)
         filter.price
           ? (filter.price.$gte = priceFrom)
