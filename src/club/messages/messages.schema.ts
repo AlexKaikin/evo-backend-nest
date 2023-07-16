@@ -17,17 +17,14 @@ export class Message {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Room', required: true })
   roomID: string
 
-  @Prop({ required: true })
-  name: string
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true })
+  user: string
 
   @Prop({ required: true })
   text: string
 
   @Prop({ required: true })
   date: string
-
-  @Prop({ default: '' })
-  avatarUrl: string
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message)

@@ -47,6 +47,7 @@ export class MessagesService {
       .sort({ id: -1 })
       .limit(_limit)
       .skip(_limit * (_page - 1))
+      .populate('user', 'id fullName avatarUrl')
       .exec()
 
     return { messages, totalCount }
