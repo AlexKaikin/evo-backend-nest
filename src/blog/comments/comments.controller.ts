@@ -20,7 +20,7 @@ export class CommentsController {
     return this.commentsService.create(createComment, currentUser)
   }
 
-  @Get('profile/:id/comments')
+  @Get('/profile/comments')
   @Auth()
   async findAllForAccount(
     @CurrentUser() currentUser: User,

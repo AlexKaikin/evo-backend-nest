@@ -27,8 +27,8 @@ export class AdminPostsService {
 
     const category = query.category ? query.category : null
 
-    const _sort = query._sort ? query._sort : null
-    const _order = query._order ? query._order : null
+    const _sort = query._sort ? query._sort : 'id'
+    const _order = query._order ? query._order : 'desc'
     const _limit = query._limit ? parseInt(query._limit) : 8
     const _page = query._page ? parseInt(query._page) : 1
 

@@ -22,8 +22,8 @@ export class AdminProductsService {
     const priceFrom = query.price_gte ? query.price_gte : 0
     const priceTo = query.price_lte ? query.price_lte : 10000000
 
-    const _sort = query._sort ? query._sort : null
-    const _order = query._order ? query._order : null
+    const _sort = query._sort ? query._sort : 'id'
+    const _order = query._order ? query._order : 'desc'
     const _limit = query._limit ? parseInt(query._limit) : 8
     const _page = query._page ? parseInt(query._page) : 1
 
