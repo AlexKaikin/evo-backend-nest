@@ -21,8 +21,8 @@
 <h3>Frontend:</h3>
 <ul>
     <li>Programming language: TypeScript</li>
-    <li>Libraries: Reactjs, @reduxjs/toolkit, react-redux, react-router-dom, axios, formik, classnames, sass </li>
-    <li>Link to GitHub: <a href="https://github.com/AlexKaikin/react-evo" target="_blank">https://github.com/AlexKaikin/react-evo</a></li>
+    <li>Libraries: NextJS, ReactJS, @reduxjs/toolkit, react-redux, react-router-dom, axios, classnames, sass и другие</li>
+    <li>Link to GitHub: <a href="https://github.com/AlexKaikin/evo-frontend-next" target="_blank">https://github.com/AlexKaikin/evo-frontend-next</a></li>
 </ul>
 
 <h3>DEMO</h3>

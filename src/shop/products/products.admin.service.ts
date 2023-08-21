@@ -19,8 +19,12 @@ export class AdminProductsService {
 
     const category = query.category ? query.category : null
 
-    const priceFrom = query.price_gte ? query.price_gte : 0
-    const priceTo = query.price_lte ? query.price_lte : 10000000
+    const priceFrom = query.price_gte ? query.price_gte : null
+    const priceTo = query.price_lte ? query.price_lte : null
+
+    const ratings = query.ratings ? query.ratings.split(',') : null
+
+    const manufacturer = query.manufacturer ? query.manufacturer : null
 
     const _sort = query._sort ? query._sort : 'id'
     const _order = query._order ? query._order : 'desc'
@@ -29,10 +33,21 @@ export class AdminProductsService {
 
     function getFindParams() {
       const filter: any = {}
-      filter.price = { $gte: priceFrom, $lte: priceTo }
+      filter.published = true
+      filter.quantity = { $gte: 1 }
 
       if (q) filter.title = new RegExp(q, 'i')
       if (category) filter.category = category
+      if (ratings) filter.rating = { $in: ratings }
+      if (manufacturer) filter.manufacturer = new RegExp(manufacturer, 'i')
+      if (priceFrom)
+        filter.price
+          ? (filter.price.$gte = priceFrom)
+          : (filter.price = { $gte: priceFrom })
+      if (priceTo)
+        filter.price
+          ? (filter.price.$lte = priceTo)
+          : (filter.price = { $lte: priceTo })
 
       return filter
     }
