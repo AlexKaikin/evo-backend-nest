@@ -14,7 +14,12 @@ export class Navigation {
   url: string
 
   @Prop()
-  filter: { id: number; title: string; type: string }[]
+  filter: {
+    id: number
+    title: string
+    type: string
+    subtitle: { id: number; title: string; type: string }[]
+  }[]
 
   @Prop()
   sort: { id: number; title: string; type: string }[]

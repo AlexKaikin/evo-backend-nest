@@ -63,7 +63,9 @@ export class GroupsService {
   async update(id: number, group: UpdateGroupDto) {
     group.updated = new Date().getTime()
 
-    const updatedGroup = await this.groupModel.findOneAndUpdate({ id }, group)
+    const updatedGroup = await this.groupModel
+      .findOneAndUpdate({ id }, group, { new: true })
+      .populate('subscribers', 'id fullName avatarUrl')
 
     return updatedGroup
   }

@@ -13,37 +13,29 @@ export class AdminNavigationService {
   ) {}
 
   async create(navigation: CreateNavigationDto) {
-    navigation.id = 1
-
+    navigation.id = 2
     const newNavigation = new this.navigationModel(navigation)
-
     newNavigation.save()
-
     return newNavigation
   }
 
   async find() {
-    const navigation = await this.navigationModel.findOne({ id: 1 })
-
+    const navigation = await this.navigationModel.findOne({ id: 2 })
     if (!navigation) throw new NotFoundException('Navigation not found')
-
     return navigation
   }
 
   async update(navigation: UpdateNavigationDto) {
     const updatedNavigation = await this.navigationModel.findOneAndUpdate(
-      { id: 1 },
-      {
-        ...navigation,
-      }
+      { id: 2 },
+      { ...navigation },
+      { new: true }
     )
-
     return updatedNavigation
   }
 
   async remove() {
     const order = await this.navigationModel.findOneAndDelete({ id: 1 })
-
     return order
   }
 }
