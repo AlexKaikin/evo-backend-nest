@@ -15,8 +15,10 @@ describe('AppController', () => {
   })
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!')
+    it('should return welcome', () => {
+      expect(appController.getHello()).toBe(
+        'EVO PLACE. Server application for the EVO community.'
+      )
     })
   })
 })
