@@ -20,7 +20,7 @@ export class Product {
   price: number
 
   @Prop({ required: true })
-  quantity: number
+  inStock: number
 
   @Prop({ required: true })
   currency: string
