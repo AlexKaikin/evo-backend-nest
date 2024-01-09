@@ -34,7 +34,7 @@ export class AdminProductsService {
     function getFindParams() {
       const filter: any = {}
       filter.published = true
-      filter.quantity = { $gte: 1 }
+      filter.inStock = { $gte: 1 }
 
       if (q) filter.title = new RegExp(q, 'i')
       if (category) filter.category = category

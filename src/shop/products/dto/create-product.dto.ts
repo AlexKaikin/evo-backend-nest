@@ -7,7 +7,7 @@ export class CreateProductDto {
   volumeMeasurement: string
   currency: string
   price: number
-  quantity: number
+  inStock: number
   category: string
   manufacturer: string
   property: PropertyType
