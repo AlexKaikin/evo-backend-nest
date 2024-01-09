@@ -28,7 +28,7 @@ export class AdminProductsService {
 
     const _sort = query._sort ? query._sort : 'id'
     const _order = query._order ? query._order : 'desc'
-    const _limit = query._limit ? parseInt(query._limit) : 8
+    const _limit = query._limit ? parseInt(query._limit) : 10
     const _page = query._page ? parseInt(query._page) : 1
 
     function getFindParams() {
