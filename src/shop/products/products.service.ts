@@ -62,9 +62,9 @@ export class ProductsService {
     return { products, totalCount }
   }
 
-  async findOne(id: string): Promise<Product> {
+  async findOne(_id: string): Promise<Product> {
     const product = await this.productModel.findOneAndUpdate(
-      { id: id },
+      { _id: _id },
       { $inc: { viewsCount: 1 } },
       { returnDocument: 'after' }
     )

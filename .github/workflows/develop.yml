@@ -1,0 +1,26 @@
+name: CI
+on:
+  push:
+    branches: ['develop']
+  pull_request:
+    branches: ['develop']
+env:
+  MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  PORT: ${{ secrets.PORT }}
+  FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Starting Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x.x
+      - name: Install modules
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build project
+        run: npm run build

@@ -30,6 +30,7 @@
     "@nestjs/platform-express": "^9.4.3",
     "@nestjs/platform-socket.io": "^9.4.3",
     "@nestjs/serve-static": "^4.0.0",
+    "@nestjs/swagger": "^7.1.17",
     "@nestjs/websockets": "^9.4.3",
     "app-root-path": "^3.1.0",
     "argon2": "^0.30.3",
