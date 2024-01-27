@@ -8,6 +8,7 @@ env:
   PORT: ${{ secrets.PORT }}
   FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
   JWT_SECRET: ${{ secrets.JWT_SECRET }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 jobs:
   CD:
     if: github.event.pull_request.merged == true
