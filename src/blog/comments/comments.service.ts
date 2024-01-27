@@ -67,8 +67,8 @@ export class CommentsService {
     return { comments, totalCount }
   }
 
-  async findOne(id: number) {
-    const comment = await this.commentModel.findOne({ id })
+  async findOne(id: string) {
+    const comment = await this.commentModel.findOne({ _id: id })
 
     if (!comment) throw new NotFoundException('Comment not found')
 

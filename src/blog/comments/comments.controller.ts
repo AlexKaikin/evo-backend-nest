@@ -51,6 +51,6 @@ export class CommentsController {
 
   @Get('comments/:id')
   findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(+id)
+    return this.commentsService.findOne(id)
   }
 }

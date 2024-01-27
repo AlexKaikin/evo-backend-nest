@@ -40,9 +40,9 @@ export class PostsService {
     return { posts, totalCount }
   }
 
-  async findOne(id: number): Promise<Post> {
+  async findOne(id: string): Promise<Post> {
     const post = await this.postModel.findOneAndUpdate(
-      { id: id },
+      { _id: id },
       { $inc: { viewsCount: 1 } },
       { returnDocument: 'after' }
     )

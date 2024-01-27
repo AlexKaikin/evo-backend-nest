@@ -18,6 +18,6 @@ export class PostsController {
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Post> {
-    return this.postsService.findOne(+id)
+    return this.postsService.findOne(id)
   }
 }
