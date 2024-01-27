@@ -1,4 +1,4 @@
-name: CI/CD
+name: CI
 on:
   push:
     branches: ['main']
@@ -29,19 +29,3 @@ jobs:
         run: npm run lint
       - name: Build project
         run: npm run build
-  CD:
-    if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
-    concurrency:
-      group: prod
-      cancel-in-progress: true
-    steps:
-      - name: SSH Command
-        uses: D3rHase/ssh-command-action@v0.2.2
-        with:
-          host: ${{ secrets.PROD_SSH_HOST }}
-          port: ${{ secrets.PROD_SSH_PORT }}
-          user: ${{ secrets.PROD_SSH_USERNAME }}
-          private_key: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
-          host_fingerprint: ${{ secrets.PROD_SSH_FINGERPRINT }}
-          command: source ~/.nvm/nvm.sh; ~/deploy-backend.sh
