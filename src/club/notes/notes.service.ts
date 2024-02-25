@@ -46,15 +46,7 @@ export class NotesService {
     return { notes, totalCount }
   }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} note`
-  // }
-
-  // update(id: number, updateNoteDto: UpdateNoteDto) {
-  //   return `This action updates a #${id} note`
-  // }
-
-  remove(id: number) {
-    return this.noteModel.findOneAndDelete({ id })
+  remove(_id: string) {
+    return this.noteModel.findOneAndDelete({ _id })
   }
 }
