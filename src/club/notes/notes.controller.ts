@@ -4,14 +4,12 @@ import {
   Delete,
   Get,
   Param,
-  //Patch,
   Post,
   Query,
   Res,
 } from '@nestjs/common'
 import { Response } from 'express'
 import { CreateNoteDto } from './dto/create-note.dto'
-//import { UpdateNoteDto } from './dto/update-note.dto'
 import { NotesService } from './notes.service'
 import { Note } from './notes.schema'
 import { Auth } from 'src/account/auth/decorators/auth.decorator'
@@ -43,19 +41,9 @@ export class NotesController {
     return res.set({ 'X-Total-Count': totalCount }).json(notes)
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.notesService.findOne(+id)
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateNoteDto: UpdateNoteDto) {
-  //   return this.notesService.update(+id, updateNoteDto)
-  // }
-
   @Delete(':id')
   @Auth()
-  remove(@Param('id') id: string): Promise<Note> {
-    return this.notesService.remove(+id)
+  remove(@Param('id') _id: string): Promise<Note> {
+    return this.notesService.remove(_id)
   }
 }
