@@ -12,11 +12,11 @@ export class NotesService {
   create(note: CreateNoteDto) {
     note.id = +new Date().getTime()
     note.created = +new Date().getTime()
-
+    const by = note.user ? 'user' : 'group'
     const newNote = new this.noteModel(note)
     newNote.save()
 
-    return newNote
+    return newNote.populate(by, 'avatarUrl')
   }
 
   async findAll(id: string, query: any) {
