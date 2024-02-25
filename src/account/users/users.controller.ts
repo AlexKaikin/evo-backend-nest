@@ -32,6 +32,8 @@ export class UsersController {
       currentUser
     )
 
+    res.append('Access-Control-Expose-Headers', 'X-Total-Count')
+
     return res.set({ 'X-Total-Count': totalCount }).json(users)
   }
 
