@@ -16,7 +16,7 @@ export class NotesService {
     const newNote = new this.noteModel(note)
     newNote.save()
 
-    return newNote.populate(by, 'avatarUrl')
+    return newNote.populate(by, 'avatarUrl creator')
   }
 
   async findAll(id: string, query: any) {
