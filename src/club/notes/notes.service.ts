@@ -26,7 +26,7 @@ export class NotesService {
     const _page = query._page ? parseInt(query._page) : 1
 
     function getPopulateParams() {
-      return by === 'user' ? 'fullName avatarUrl' : 'title avatarUrl'
+      return by === 'user' ? 'fullName avatarUrl' : 'title avatarUrl creator'
     }
 
     function getFindParams() {
