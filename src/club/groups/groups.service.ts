@@ -30,7 +30,7 @@ export class GroupsService {
     const _page = query._page ? parseInt(query._page) : 1
 
     function getFindParams() {
-      const filter: { title?: RegExp } = {}
+      const filter: { title?: RegExp; active: boolean } = { active: true }
       if (q) filter.title = new RegExp(q, 'i')
 
       return filter
@@ -72,7 +72,7 @@ export class GroupsService {
 
   async remove(id: number) {
     const group = await this.groupModel.findOne({ id })
-    group.title = group.title + '(deleted)'
+    group.title = group.title + ' (deleted)'
     group.avatarUrl = ''
     group.about = ''
     group.location = ''
