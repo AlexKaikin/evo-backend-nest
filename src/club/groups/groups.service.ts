@@ -71,9 +71,19 @@ export class GroupsService {
   }
 
   async remove(id: number) {
-    const group = await this.groupModel.findOneAndDelete({ id })
+    const group = await this.groupModel.findOne({ id })
+    group.title = group.title + '(deleted)'
+    group.avatarUrl = ''
+    group.about = ''
+    group.location = ''
+    group.updated = new Date().getTime()
+    group.active = false
 
-    return group
+    const updatedGroup = await this.groupModel
+      .findOneAndUpdate({ id }, group, { new: true })
+      .populate('subscribers', 'id fullName avatarUrl')
+
+    return updatedGroup
   }
 
   async followGroup(

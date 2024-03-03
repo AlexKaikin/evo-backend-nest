@@ -24,6 +24,9 @@ export class Group {
   @Prop({ default: false })
   private: boolean
 
+  @Prop({ default: true })
+  active: boolean
+
   @Prop({ default: '' })
   avatarUrl: string
 
